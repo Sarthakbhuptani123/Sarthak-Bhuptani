@@ -9,18 +9,18 @@ const NavBar = () => {
   <img
     src={profile}
     alt="Sarthak"
-    className="w-6 h-6 rounded-full object-cover"
+    className="w-5 h-5 rounded-full object-cover"
   />
   <span className="text-lg font-bold">Sarthak</span>
 </div>
 
 
         <ul className="flex gap-3">
-          <li><a href="#home" className="hover:text-blue-400">Home</a></li>
-          <li><a href="#about" className="hover:text-blue-400">About</a></li>
-          <li><a href="#skills" className="hover:text-blue-400">Skills</a></li>
-          <li><a href="#projects" className="hover:text-blue-400">Projects</a></li>
-          <li><a href="#contact" className="hover:text-blue-400">Contact</a></li>
+          <li><a href="#home" className="hover:text-blue-400 w-5 h-5">Home</a></li>
+          <li><a href="#about" className="hover:text-blue-400 w-5 h-5">About</a></li>
+          <li><a href="#skills" className="hover:text-blue-400 w-5 h-5">Skills</a></li>
+          <li><a href="#projects" className="hover:text-blue-400 w-5 h-5">Projects</a></li>
+          <li><a href="#contact" className="hover:text-blue-400 w-5 h-5">Contact</a></li>
         </ul>
       </div>
     </nav>
