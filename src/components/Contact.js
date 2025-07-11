@@ -15,7 +15,7 @@ const socials = [
   {
     name: 'Gmail',
     icon: <FaEnvelope className="text-red-400 text-3xl mb-2" />,
-    url: 'mailto:mrsarthak825@gmail.com',
+    url: 'mrsarthak825@gmail.com',
   },
   {
     name: 'Twitter',
