@@ -15,7 +15,7 @@ const socials = [
   {
     name: 'Gmail',
     icon: <FaEnvelope className="text-red-400 text-3xl mb-2" />,
-    url: 'mrsarthak825@gmail.com',
+    url: 'https://mail.google.com/mail/?view=cm&fs=1&to=mrsarthak825@gmail.com'
   },
   {
     name: 'Twitter',
@@ -47,7 +47,10 @@ const Contact = () => {
       {/* Location Section */}
       <div className="mt-12 flex items-center justify-center gap-3 text-gray-300 text-lg">
         <FaMapMarkerAlt className="text-red-400 text-2xl" />
-        <p>Gandhinagar, Gujarat, India</p>
+        <p>Gandhinagar, Gujarat, India <br  />Contact Number +91743605929
+       </p>
+          
+
       </div>
     </section>
   );
