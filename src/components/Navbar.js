@@ -12,27 +12,32 @@ const Navbar = () => {
     { label: "Contact", href: "#contact" },
   ];
 
-  // Smooth scroll effect
+  // Smooth scroll + close menu on link click
   useEffect(() => {
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute("href");
-        const targetElement = document.querySelector(targetId);
-        const headerOffset = document.querySelector("nav")?.offsetHeight || 0;
+    const handleClick = (e) => {
+      const anchor = e.target.closest("a[href^='#']");
+      if (!anchor) return;
 
-        if (targetElement) {
-          const offsetTop =
-            targetElement.getBoundingClientRect().top + window.pageYOffset;
-          window.scrollTo({
-            top: offsetTop - headerOffset - 10,
-            behavior: "smooth",
-          });
-        }
+      e.preventDefault();
+      const targetId = anchor.getAttribute("href");
+      const targetElement = document.querySelector(targetId);
+      const headerOffset = document.querySelector("nav")?.offsetHeight || 0;
 
-        setIsMobileMenuOpen(false);
-      });
-    });
+      if (targetElement) {
+        const offsetTop =
+          targetElement.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({
+          top: offsetTop - headerOffset - 10,
+          behavior: "smooth",
+        });
+      }
+
+      // 👇 Reset menu and animations
+      setIsMobileMenuOpen(false);
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
   }, []);
 
   return (
@@ -64,47 +69,46 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Mobile Toggle Button */}
-        <button
-          className={`md:hidden relative z-50 transition-transform duration-300 ${
-            isMobileMenuOpen ? "rotate-90" : ""
-          }`}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <motion.div
-            initial={false}
-            animate={isMobileMenuOpen ? "open" : "closed"}
-            className="flex flex-col gap-1 items-center text-center"
+        {/* Toggle Button (Mobile) */}
+        <div className="md:hidden">
+          <button
+            className="z-50 relative"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
           >
-            <motion.span
-              variants={{
-                open: { rotate: 45, y: 6 },
-                closed: { rotate: 0, y: 0 },
-              }}
-              transition={{ duration: 0.3 }}
-              className="w-8 h-1 bg-teal-400 rounded origin-left"
-            />
-            <motion.span
-              variants={{
-                open: { opacity: 0 },
-                closed: { opacity: 1 },
-              }}
-              transition={{ duration: 0.2 }}
-              className="w-8 h-1 bg-teal-400 rounded"
-            />
-            <motion.span
-              variants={{
-                open: { rotate: -45, y: -6 },
-                closed: { rotate: 0, y: 0 },
-              }}
-              transition={{ duration: 0.3 }}
-              className="w-8 h-1 bg-teal-400 rounded origin-left"
-            />
-          </motion.div>
-        </button>
+            <motion.div
+              animate={isMobileMenuOpen ? "open" : "closed"}
+              className="flex flex-col gap-1 "
+            >
+              <motion.span
+                variants={{
+                  open: { rotate: 45, y: 6 },
+                  closed: { rotate: 0, y: 0 },
+                }}
+                transition={{ duration: 0.3 }}
+                className="w-8 h-1 bg-teal-400 rounded origin-left"
+              />
+              <motion.span
+                variants={{
+                  open: { opacity: 0 },
+                  closed: { opacity: 1 },
+                }}
+                transition={{ duration: 0.2 }}
+                className="w-8 h-1 bg-teal-400 rounded"
+              />
+              <motion.span
+                variants={{
+                  open: { rotate: -45, y: -6 },
+                  closed: { rotate: 0, y: 0 },
+                }}
+                transition={{ duration: 0.3 }}
+                className="w-8 h-1 bg-teal-400 rounded origin-left"
+              />
+            </motion.div>
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Dropdown Animation */}
+      {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -113,9 +117,9 @@ const Navbar = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -200, opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="absolute top-full left-0 w-full bg-gray-800 px-6 py-6 shadow-2xl md:hidden"
+            className="absolute top-full left-0 w-full bg-gray-900 bg-opacity-95 backdrop-blur-md px-6 py-6 z-40 shadow-xl md:hidden"
           >
-            <ul className="flex flex-col items-center text-center gap-6">
+            <ul className="flex flex-col gap-6 text-center">
               {menuItems.map((item) => (
                 <motion.li
                   key={item.label}
