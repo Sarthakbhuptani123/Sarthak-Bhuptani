@@ -1,50 +1,49 @@
 import React from 'react';
 
-function Skills() {
-  const skillGroups = [
-    {
-      title: 'Frontend',
-      skills: ['React.js', 'HTML5', 'CSS3', 'JavaScript', 'Tailwind CSS'],
-      color: 'border-blue-500',
-    },
-    {
-      title: 'Backend & DB',
-      skills: ['Python', 'PHP', 'MySQL'],
-      color: 'border-green-500',
-    },
-    {
-      title: 'Tools & Platforms',
-      skills: ['Git', 'GitHub', 'Netlify', 'Firebase'],
-      color: 'border-yellow-400',
-    },
-  ];
-
+const Skills = () => {
   return (
-    <section id="skills" className="bg-black text-white py-20 px-6 md:px-16">
-      <h2 className="text-4xl font-bold text-center mb-12 decoration-green-400">Skills</h2>
+    <section id="skills" className="py-20 md:py-28 bg-gray-950 text-white">
+      <div className="container mx-auto px-6">
+        <h3
+          className="text-4xl font-extrabold text-teal-400 mb-12 text-center"
+          data-aos="fade-down"
+        >
+          My Skills
+        </h3>
 
-      <div className="grid gap-10 md:grid-cols-3">
-        {skillGroups.map((group, index) => (
-          <div
-            key={index}
-            className={`bg-gray-900 rounded-2xl p-6 border-l-8 ${group.color} shadow-lg hover:shadow-2xl transition duration-300`}
-          >
-            <h3 className="text-2xl font-semibold mb-4 text-white">{group.title}</h3>
-            <div className="flex flex-wrap gap-3">
-              {group.skills.map((skill, idx) => (
-                <span
-                  key={idx}
-                  className="bg-gray-800 text-white border border-gray-700 px-4 py-1 rounded-full text-sm font-medium hover:bg-gray-700 transition"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="bg-gray-800 p-8 rounded-2xl shadow-xl" data-aos="fade-up" data-aos-delay="100">
+            <h4 className="text-xl font-bold text-indigo-400 mb-2">Programming Languages</h4>
+            <ul className="list-disc list-inside text-gray-300">
+              <li>Python</li>
+              <li>JavaScript</li>
+              <li>PHP</li>
+              <li>HTML, CSS</li>
+            </ul>
           </div>
-        ))}
+
+          <div className="bg-gray-800 p-8 rounded-2xl shadow-xl" data-aos="fade-up" data-aos-delay="200">
+            <h4 className="text-xl font-bold text-purple-400 mb-2">Frameworks & Libraries</h4>
+            <ul className="list-disc list-inside text-gray-300">
+              <li>React.js</li>
+              <li>Django</li>
+              <li>REST API</li>
+              <li>Tailwind CSS</li>
+            </ul>
+          </div>
+
+          <div className="bg-gray-800 p-8 rounded-2xl shadow-xl" data-aos="fade-up" data-aos-delay="300">
+            <h4 className="text-xl font-bold text-blue-400 mb-2">Tools & Databases</h4>
+            <ul className="list-disc list-inside text-gray-300">
+              <li>Git, GitHub</li>
+              <li>VS Code, Netlify</li>
+              <li>MySQL, SQLite</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );
-}
+};
 
 export default Skills;

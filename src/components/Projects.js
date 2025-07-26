@@ -1,61 +1,98 @@
 import React from 'react';
 
-const projects = [
-  {
-    title: 'Stock Navigator',
-    desc: 'A stock prediction tool using machine learning that shows live stock graphs and future trends.',
-    stack: 'Python, Django, scikit-learn, Plotly',
-    color: 'text-blue-400',
-  },
-  {
-    title: 'News App',
-    desc: 'A React app that shows live news from different categories using NewsAPI.',
-    stack: 'React.js, Bootstrap, API integration',
-    color: 'text-green-400',
-  },
-  {
-    title: 'Voice Assistant',
-    desc: 'Desktop assistant built with Python that responds to voice commands like weather, search, and jokes.',
-    stack: 'Python, pyttsx3, speechRecognition',
-    color: 'text-yellow-400',
-  },
-  {
-    title: 'Library Management System',
-    desc: 'A web app to manage books, students, and book issuing built using PHP and MySQL.',
-    stack: 'PHP, MySQL, HTML, CSS',
-    color: 'text-red-400',
-  },
-];
-
-const Projects = () => {
+const Projects = ({ sectionsRef }) => {
   return (
-    <section id="projects" className="pt-24 px-6 md:px-16 py-20 bg-gray-900 text-white">
-      <h2 className="text-4xl font-bold text-center mb-12 decoration-pink-400">Projects</h2>
-      <div className="grid gap-8 md:grid-cols-2">
-        {projects.map((proj, i) => (
-          <div
-            key={i}
-            className="bg-black border border-gray-700 rounded-2xl p-6 hover:shadow-lg transition duration-300"
-          >
-            <h3 className={`text-2xl font-semibold mb-2 ${proj.color}`}>{proj.title}</h3>
-            <p className="text-gray-300 mb-4">{proj.desc}</p>
-            <p className="text-sm text-gray-500 mb-4">Built with: {proj.stack}</p>
-            <div className="flex gap-4">
-              <a
-                href="#"
-                className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600 text-white text-sm"
-              >
-                Live Demo
-              </a>
-              <a
-                href="https://github.com/Sarthakbhuptani123"
-                className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-800 text-white text-sm"
-              >
-                GitHub
-              </a>
+    <section
+      id="projects"
+      ref={(el) => {
+        if (sectionsRef && sectionsRef.current) {
+          sectionsRef.current[2] = el;
+        }
+      }}
+      className="py-20 md:py-28 bg-gray-900"
+      data-aos="fade-up"
+    >
+      <div className="container mx-auto px-6">
+        <h3
+          className="text-4xl font-extrabold text-teal-400 mb-12 text-center"
+          data-aos="fade-down"
+        >
+          My Projects
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {[
+            {
+              title: 'Stock Predictor Application',
+              desc:
+                'ML-based app showing real-time stock price updates and forecasting future trends using historical data.',
+              img: 'https://placehold.co/600x400/1f2937/6366f1?text=Stock+Predictor',
+              delay: '200',
+            },
+            {
+              title: 'Personal Voice Assistant',
+              desc:
+                'Voice-controlled Python assistant for tasks like weather, jokes, search, and media playback.',
+              img: 'https://placehold.co/600x400/1f2937/a855f7?text=Voice+Assistant',
+              delay: '400',
+            },
+            {
+              title: 'Library Management System',
+              desc:
+                'Web app to manage books, students, issues & returns with real-time search and overdue tracking.',
+              img: 'https://placehold.co/600x400/1f2937/3b82f6?text=Library+System',
+              delay: '600',
+            },
+            {
+              title: 'News App',
+              desc:
+                'Live news app with category-wise filters using NewsAPI and React.js for clean user experience.',
+              img: 'https://placehold.co/600x400/1f2937/f97316?text=News+App',
+              delay: '800',
+            },
+          ].map((project, idx) => (
+            <div
+              key={idx}
+              className="bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-700
+                         hover:shadow-2xl transition duration-300 transform hover:-translate-y-2"
+              data-aos="fade-up"
+              data-aos-delay={project.delay}
+            >
+              <img
+                src={project.img}
+                alt={project.title}
+                className="w-full h-56 object-cover transform hover:scale-105 transition duration-300"
+              />
+              <div className="p-6">
+                <h4 className="text-2xl font-bold text-gray-100 mb-2">
+                  {project.title}
+                </h4>
+                <p className="text-gray-300 text-base mb-4">{project.desc}</p>
+                <a
+                  href="https://github.com/Sarthakbhuptani123"
+                  className="inline-flex items-center text-teal-400 hover:text-teal-300 font-semibold transition duration-300"
+                >
+                  View Project In GitHub
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-arrow-right ml-2"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
