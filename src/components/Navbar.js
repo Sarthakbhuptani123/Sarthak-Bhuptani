@@ -115,16 +115,21 @@ const Navbar = () => {
             transition={{ duration: 0.4, ease: "easeInOut" }}
             className="absolute top-full left-0 w-full bg-gray-800 px-6 py-6 shadow-2xl md:hidden"
           >
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-col items-center text-center gap-6">
               {menuItems.map((item) => (
-                <li key={item.label}>
+                <motion.li
+                  key={item.label}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <a
                     href={item.href}
-                    className="text-white text-lg hover:text-teal-400"
+                    className="text-white text-lg font-medium hover:text-teal-400 transition-colors duration-300"
                   >
                     {item.label}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </motion.div>
