@@ -1,4 +1,8 @@
 import React from 'react';
+import stockImg from '../assets/stock.jpg';
+import voiceImg from '../assets/voice.jpg';
+import libraryImg from '../assets/library.jpg';
+import newsImg from '../assets/news.jpg';
 
 const Projects = ({ sectionsRef }) => {
   return (
@@ -26,28 +30,28 @@ const Projects = ({ sectionsRef }) => {
               title: 'Stock Predictor Application',
               desc:
                 'ML-based app showing real-time stock price updates and forecasting future trends using historical data.',
-              img: 'https://placehold.co/600x400/1f2937/6366f1?text=Stock+Predictor',
+              img: stockImg,
               delay: '200',
             },
             {
               title: 'Personal Voice Assistant',
               desc:
                 'Voice-controlled Python assistant for tasks like weather, jokes, search, and media playback.',
-              img: 'https://placehold.co/600x400/1f2937/a855f7?text=Voice+Assistant',
+              img: voiceImg,
               delay: '400',
             },
             {
               title: 'Library Management System',
               desc:
                 'Web app to manage books, students, issues & returns with real-time search and overdue tracking.',
-              img: 'https://placehold.co/600x400/1f2937/3b82f6?text=Library+System',
+              img: libraryImg,
               delay: '600',
             },
             {
               title: 'News App',
               desc:
                 'Live news app with category-wise filters using NewsAPI and React.js for clean user experience.',
-              img: 'https://placehold.co/600x400/1f2937/f97316?text=News+App',
+              img: newsImg,
               delay: '800',
             },
           ].map((project, idx) => (
