@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import profileImg from '../assets/profile.jpg';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -46,7 +47,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <img
-            src="https://placehold.co/40x40/2d3748/ffffff?text=SB"
+            src={profileImg}
             alt="Logo"
             className="w-10 h-10 rounded-full border-2 border-teal-400"
           />
