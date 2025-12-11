@@ -1,6 +1,7 @@
+// src/components/Navbar.js
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react"; // Make sure you have lucide-react or use alternatives
+import { Menu, X } from "lucide-react"; 
 import profileImg from '../assets/profile.jpg';
 
 const Navbar = () => {
@@ -30,8 +31,6 @@ const Navbar = () => {
     e.preventDefault();
     const targetId = href;
     const targetElement = document.querySelector(targetId);
-    
-    // Height of navbar for offset
     const navHeight = 80; 
 
     if (targetElement) {
@@ -43,11 +42,9 @@ const Navbar = () => {
         behavior: "smooth"
       });
     }
-    
     setIsMobileMenuOpen(false);
   };
 
-  // Animation Variants
   const navVariants = {
     hidden: { y: -100, opacity: 0 },
     visible: { 
@@ -58,21 +55,18 @@ const Navbar = () => {
   };
 
   const mobileMenuVariants = {
-    closed: { opacity: 0, height: 0, transition: { duration: 0.3 } },
+    closed: { 
+      opacity: 0, 
+      y: -20, 
+      pointerEvents: "none",
+      transition: { duration: 0.2 } 
+    },
     open: { 
       opacity: 1, 
-      height: "auto",
-      transition: { 
-        duration: 0.3,
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      } 
+      y: 0, 
+      pointerEvents: "auto",
+      transition: { duration: 0.3 } 
     }
-  };
-
-  const itemVariants = {
-    closed: { opacity: 0, x: -20 },
-    open: { opacity: 1, x: 0 }
   };
 
   return (
@@ -81,18 +75,18 @@ const Navbar = () => {
       animate="visible"
       variants={navVariants}
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled 
-          ? "bg-slate-950/80 backdrop-blur-md border-b border-white/10 shadow-lg py-4" 
+        isScrolled || isMobileMenuOpen
+          ? "bg-slate-950/90 backdrop-blur-md border-b border-white/10 shadow-lg py-4" 
           : "bg-transparent py-6"
       }`}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center">
+      <div className="container mx-auto px-6 flex justify-between items-center relative">
         
         {/* --- Logo --- */}
         <a 
           href="#hero" 
           onClick={(e) => handleLinkClick(e, '#hero')}
-          className="flex items-center gap-3 group"
+          className="flex items-center gap-3 group relative z-50"
         >
           <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-cyan-500/50 group-hover:border-cyan-400 transition-colors">
             <img
@@ -122,8 +116,6 @@ const Navbar = () => {
               >
                 {item.label}
               </a>
-              
-              {/* Hover Glow Effect */}
               {hoveredIndex === index && (
                 <motion.div
                   layoutId="navbar-hover"
@@ -136,31 +128,30 @@ const Navbar = () => {
               )}
             </li>
           ))}
-          
-          {/* Resume Button (Optional) */}
           <li className="ml-4">
-             <a 
+              <a 
                href="/Bhuptani_Sarthak.pdf"
                target="_blank"
                className="px-5 py-2 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all hover:scale-105"
-             >
-               Resume
-             </a>
+              >
+                Resume
+              </a>
           </li>
         </ul>
 
         {/* --- Mobile Toggle --- */}
-        <div className="md:hidden">
+        <div className="md:hidden relative z-50">
           <button
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-            className="p-2 text-slate-300 hover:text-white transition-colors"
+            className="p-2 text-slate-300 hover:text-white transition-colors focus:outline-none"
+            aria-label="Toggle Menu"
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </div>
 
-      {/* --- Mobile Menu Dropdown --- */}
+      {/* --- Mobile Menu Dropdown (Fixed) --- */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -168,25 +159,29 @@ const Navbar = () => {
             animate="open"
             exit="closed"
             variants={mobileMenuVariants}
-            className="md:hidden overflow-hidden bg-slate-900 border-b border-white/10 backdrop-blur-xl"
+            className="absolute top-full left-0 w-full bg-slate-950/95 border-b border-white/10 backdrop-blur-xl shadow-2xl md:hidden overflow-hidden"
           >
-            <ul className="flex flex-col gap-4 p-6">
+            <ul className="flex flex-col items-center justify-center gap-6 py-10">
               {menuItems.map((item) => (
-                <motion.li key={item.label} variants={itemVariants}>
+                <motion.li 
+                  key={item.label}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <a
                     href={item.href}
                     onClick={(e) => handleLinkClick(e, item.href)}
-                    className="block text-lg font-medium text-slate-300 hover:text-cyan-400 hover:pl-2 transition-all duration-300"
+                    className="text-xl font-medium text-slate-300 hover:text-cyan-400 transition-colors"
                   >
                     {item.label}
                   </a>
                 </motion.li>
               ))}
-               <motion.li variants={itemVariants} className="pt-4">
+               <motion.li whileHover={{ scale: 1.05 }} className="pt-4">
                   <a 
                     href="/Bhuptani_Sarthak.pdf"
                     target="_blank"
-                    className="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold"
+                    className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold shadow-lg"
                   >
                     Download Resume
                   </a>
