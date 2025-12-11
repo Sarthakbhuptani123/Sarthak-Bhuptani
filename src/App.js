@@ -1,30 +1,30 @@
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
+// src/App.js
+import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import AnimatedBackground from './components/AnimatedBackground';
 
 function App() {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
-
   return (
-    <div className="bg-[#f9fafb] text-gray-800 font-sans">
+    <div className="relative text-white antialiased selection:bg-cyan-500 selection:text-white">
+      
+      {/* Global Background - Stays fixed behind everything */}
+      <AnimatedBackground />
+
+      {/* Main Content */}
       <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+      <main className="relative z-10">
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </main>
+
     </div>
   );
 }
