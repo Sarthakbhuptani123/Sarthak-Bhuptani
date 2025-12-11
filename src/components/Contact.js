@@ -76,7 +76,7 @@ const Contact = ({ sectionsRef }) => {
                          text-gray-300 hover:text-teal-400 transition duration-300 transform hover:scale-110 hover:rotate-6"
             >
               <svg
-                xmlns="https://github.com/Sarthakbhuptani123"
+                xmlns="https://github.com/sarthakbhuptani"
                 width="28"
                 height="28"
                 viewBox="0 0 24 24"
