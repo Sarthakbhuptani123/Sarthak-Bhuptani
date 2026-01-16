@@ -5,9 +5,13 @@
 html,
 body {
   overflow-x: hidden;
-  background-color: #020617;
-  /* Slate-950 for consistency */
   font-family: 'Outfit', sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-300;
+  }
 }
 
 /* Hide default cursor only on non-touch devices/larger screens where CustomCursor is active */

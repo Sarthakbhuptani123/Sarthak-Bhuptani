@@ -19,15 +19,15 @@ const SkillPill = ({ skill, index }) => {
         backgroundColor: "rgba(255, 255, 255, 0.1)",
         borderColor: "rgba(255, 255, 255, 0.3)"
       }}
-      className="flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-800/50 border border-white/5 backdrop-blur-sm transition-colors cursor-pointer group"
+      className="flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 border border-slate-300 dark:border-white/5 backdrop-blur-sm transition-colors cursor-pointer group"
     >
       <div
-        className="p-1.5 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors"
+        className="p-1.5 rounded-full bg-white group-hover:bg-white/80 dark:bg-white/5 dark:group-hover:bg-white/10 transition-colors"
         style={{ color: skill.color }}
       >
         <skill.icon className="text-lg" />
       </div>
-      <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
+      <span className="text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
         {skill.name}
       </span>
     </motion.div>
@@ -51,7 +51,7 @@ const SpotlightCard = ({ title, icon: Icon, skills, delay, spotlightColor }) => 
       viewport={{ once: true }}
       transition={{ delay, duration: 0.5 }}
       onMouseMove={handleMouseMove}
-      className="group relative border border-white/10 bg-slate-900/40 rounded-3xl p-8 overflow-hidden"
+      className="group relative border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/40 rounded-3xl p-8 overflow-hidden"
     >
       {/* Spotlight Effect */}
       <motion.div
@@ -70,12 +70,12 @@ const SpotlightCard = ({ title, icon: Icon, skills, delay, spotlightColor }) => 
       {/* Content */}
       <div className="relative z-10">
         <div className="flex items-center gap-4 mb-8">
-          <div className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform duration-300">
+          <div className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-cyan-100 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform duration-300">
             <Icon size={24} />
             {/* Icon Glow */}
             <div className="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          <h3 className="text-2xl font-bold text-white">{title}</h3>
+          <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{title}</h3>
         </div>
 
         <div className="flex flex-wrap gap-3">
@@ -143,13 +143,13 @@ const Skills = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-semibold tracking-wide uppercase mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-500/10 border border-cyan-200 dark:border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-sm font-semibold tracking-wide uppercase mb-4">
             <Sparkles size={14} /> My Expertise
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Skillset</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
+            Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-600 dark:from-cyan-400 dark:to-purple-600">Skillset</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-lg">
             A diverse stack of technologies I use to bring ideas to life, from pixel-perfect UIs to scalable backend logic.
           </p>
         </motion.div>

@@ -12,9 +12,10 @@ import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import Preloader from './components/Preloader';
 
+
 function App() {
   return (
-    <div className="relative text-white antialiased selection:bg-cyan-500 selection:text-white">
+    <div className="relative antialiased selection:bg-cyan-500 selection:text-white">
       <Preloader />
 
       {/* Global Background - Stays fixed behind everything */}

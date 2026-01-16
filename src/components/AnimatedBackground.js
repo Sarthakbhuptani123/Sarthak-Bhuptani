@@ -1,67 +1,95 @@
 // src/components/AnimatedBackground.js
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const AnimatedBackground = () => {
-  // Animation config for random floating movement
-  const blobVariants = {
-    animate: {
-      scale: [1, 1.2, 1],
-      rotate: [0, 90, 0],
-      opacity: [0.3, 0.5, 0.3],
-      transition: {
-        duration: 15,
-        repeat: Infinity,
-        ease: "linear"
-      }
-    }
-  };
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const moveVariants = {
-    animate: {
-      y: [0, -50, 0],
-      x: [0, 30, 0],
-      transition: {
-        duration: 20,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
+  // Smooth spring animation for the cursor follower
+  const springConfig = { damping: 25, stiffness: 700 };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   return (
-    <div className="fixed inset-0 -z-50 overflow-hidden bg-slate-950">
-      
-      {/* 1. Subtle Grid Overlay for Texture */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+    <div className="fixed inset-0 -z-50 overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
 
-      {/* 2. Floating Gradient Orbs */}
-      
-      {/* Top Left - Purple (Deep) */}
+      {/* 0. Background Image Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?q=80&w=2832&auto=format&fit=crop"
+          alt="Background Texture"
+          className="w-full h-full object-cover opacity-90 dark:opacity-80 mix-blend-overlay dark:mix-blend-soft-light transition-opacity duration-700"
+        />
+        {/* Darken overlay for better text readability */}
+        <div className="absolute inset-0 bg-slate-50/80 dark:bg-slate-950/80"></div>
+      </div>
+
+      {/* 1. Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] z-0"></div>
+
+      {/* 2. Interactive Mouse Spotlight */}
       <motion.div
-        variants={moveVariants}
-        animate="animate"
-        className="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-purple-900/20 rounded-full blur-[100px] mix-blend-screen"
+        style={{ x: springX, y: springY, translateX: '-50%', translateY: '-50%' }}
+        className="absolute w-[600px] h-[600px] bg-cyan-400/20 dark:bg-cyan-500/10 rounded-full blur-[100px] opacity-50 pointer-events-none hidden md:block"
       />
 
-      {/* Bottom Right - Cyan (Bright) */}
+      {/* 3. Primary aurora bloom (Top Left) */}
       <motion.div
-        variants={moveVariants}
-        animate="animate"
-        transition={{ delay: 2 }}
-        className="absolute bottom-[-10%] right-[-10%] w-[35rem] h-[35rem] bg-cyan-900/20 rounded-full blur-[100px] mix-blend-screen"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+          rotate: [0, 45, 0],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] min-w-[300px] min-h-[300px] rounded-full bg-gradient-to-r from-cyan-400/30 to-blue-500/30 dark:from-cyan-900/40 dark:to-blue-900/40 blur-[80px] md:blur-[120px]"
       />
 
-      {/* Center - Blue (Subtle Pulse) */}
+      {/* 4. Secondary warmed bloom (Bottom Right) */}
       <motion.div
-        variants={blobVariants}
-        animate="animate"
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[50rem] h-[50rem] bg-blue-900/10 rounded-full blur-[120px] mix-blend-screen"
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.3, 0.5, 0.3],
+          x: [0, -50, 0],
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute -bottom-[10%] -right-[10%] w-[45vw] h-[45vw] min-w-[300px] min-h-[300px] rounded-full bg-gradient-to-l from-purple-400/30 to-pink-500/30 dark:from-purple-900/40 dark:to-pink-900/40 blur-[80px] md:blur-[120px]"
       />
 
-      {/* 3. Noise Overlay (Optional - adds film grain texture) */}
-      <div className="absolute inset-0 opacity-[0.03] bg-repeat pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
-      
+      {/* 5. Drifting Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{
+              x: Math.random() * 100 + "%",
+              y: Math.random() * 100 + "%",
+              opacity: Math.random() * 0.5 + 0.2,
+            }}
+            animate={{
+              y: [null, Math.random() * -100 + "%"],
+              x: [null, (Math.random() - 0.5) * 50 + "%"],
+            }}
+            transition={{
+              duration: Math.random() * 20 + 20,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            className="absolute w-1 h-1 md:w-2 md:h-2 bg-slate-900/10 dark:bg-white/10 rounded-full blur-[1px]"
+          />
+        ))}
+      </div>
+
     </div>
   );
 };

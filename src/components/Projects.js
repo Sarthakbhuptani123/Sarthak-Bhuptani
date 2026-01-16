@@ -83,13 +83,13 @@ const FilterTabs = ({ tabs, activeTab, setActiveTab }) => {
           onClick={() => setActiveTab(tab)}
           className={`relative px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeTab === tab
             ? 'text-white'
-            : 'text-slate-400 hover:text-white hover:bg-white/5'
+            : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/5'
             }`}
         >
           {activeTab === tab && (
             <motion.div
               layoutId="active-pill"
-              className="absolute inset-0 bg-slate-800 border border-white/10 rounded-full shadow-lg"
+              className="absolute inset-0 bg-slate-900 dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-full shadow-lg"
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             />
           )}
@@ -145,7 +145,7 @@ const ProjectCard = React.forwardRef(({ project, onClick }, ref) => {
       }}
       className="relative h-full w-full cursor-pointer perspective-1000 group"
     >
-      <div className="relative h-full bg-slate-900/40 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-xl transform-gpu transition-all duration-300 hover:border-cyan-500/30 group-hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]">
+      <div className="relative h-full bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-xl transform-gpu transition-all duration-300 hover:border-cyan-500/30 group-hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]">
 
         {/* Spotlight Gradient Layer */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none">
@@ -154,35 +154,35 @@ const ProjectCard = React.forwardRef(({ project, onClick }, ref) => {
 
         {/* Image Section */}
         <div className="relative h-48 overflow-hidden z-10">
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/90 dark:from-slate-900/90 via-transparent to-transparent z-10" />
           <motion.img
             src={project.img}
             alt={project.title}
             className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
           />
-          <div className="absolute top-3 right-3 z-20 bg-slate-900/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-xs font-bold text-white flex items-center gap-1 shadow-lg">
+          <div className="absolute top-3 right-3 z-20 bg-white/90 dark:bg-slate-900/60 backdrop-blur-md px-3 py-1 rounded-full border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1 shadow-lg">
             {project.icon} <span className="hidden sm:inline">Project</span>
           </div>
         </div>
 
         {/* Content Section */}
         <div className="relative p-6 z-10 flex flex-col h-[calc(100%-12rem)]">
-          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
             {project.title}
           </h3>
 
-          <p className="text-slate-400 text-sm mb-4 line-clamp-3 leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-3 leading-relaxed">
             {project.description}
           </p>
 
           <div className="mt-auto flex flex-wrap gap-2">
             {project.tech.slice(0, 3).map((t, i) => (
-              <span key={i} className="text-[10px] uppercase tracking-wider font-semibold text-cyan-200 bg-cyan-950/30 border border-cyan-500/20 px-2 py-1 rounded-md">
+              <span key={i} className="text-[10px] uppercase tracking-wider font-semibold text-cyan-700 dark:text-cyan-200 bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-500/20 px-2 py-1 rounded-md">
                 {t}
               </span>
             ))}
             {project.tech.length > 3 && (
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-2 py-1 rounded-md">
                 +{project.tech.length - 3}
               </span>
             )}
@@ -212,7 +212,7 @@ const ProjectModal = ({ project, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="absolute inset-0 bg-slate-950/90 backdrop-blur-md"
+          className="absolute inset-0 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md"
         />
 
         {/* Modal Content */}
@@ -221,7 +221,7 @@ const ProjectModal = ({ project, onClose }) => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 100 }}
           transition={{ type: "spring", damping: 20, stiffness: 100 }}
-          className="relative w-full max-w-5xl bg-slate-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl z-10 grid grid-cols-1 md:grid-cols-2 max-h-[90vh] md:max-h-[800px] overflow-y-auto"
+          className="relative w-full max-w-5xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl z-10 grid grid-cols-1 md:grid-cols-2 max-h-[90vh] md:max-h-[800px] overflow-y-auto"
         >
           {/* Left Side: Visuals */}
           <div className="relative h-64 md:h-auto overflow-hidden">
@@ -230,38 +230,38 @@ const ProjectModal = ({ project, onClose }) => {
               alt={project.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-90 md:opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-90 md:opacity-60" />
 
             <div className="absolute bottom-0 left-0 p-8 w-full">
-              <h2 className="text-4xl md:text-5xl font-black text-white mb-2 drop-shadow-lg">{project.title}</h2>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-2 drop-shadow-lg">{project.title}</h2>
               <div className={`h-1.5 w-24 rounded-full bg-gradient-to-r ${project.gradient}`}></div>
             </div>
           </div>
 
           {/* Right Side: Info */}
-          <div className="p-8 md:p-10 flex flex-col bg-slate-900/50">
+          <div className="p-8 md:p-10 flex flex-col bg-slate-50 dark:bg-slate-900/50">
             <div className="flex justify-between items-start mb-6">
               <div className="flex items-center gap-2 text-yellow-400">
                 <Sparkles size={20} className="animate-pulse" />
                 <span className="text-sm font-bold uppercase tracking-widest text-slate-400">Featured Project</span>
               </div>
-              <button onClick={onClose} className="p-2 bg-white/5 border border-white/10 rounded-full hover:bg-red-500/80 hover:text-white hover:border-red-500 transition-all text-slate-400">
+              <button onClick={onClose} className="p-2 bg-slate-200 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-full hover:bg-red-500/80 hover:text-white hover:border-red-500 transition-all text-slate-500 dark:text-slate-400">
                 <X size={20} />
               </button>
             </div>
 
-            <p className="text-slate-300 text-lg leading-relaxed mb-8">
+            <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed mb-8">
               {project.description}
             </p>
 
             <div className="space-y-6 mb-8">
               <div>
-                <h4 className="flex items-center gap-2 text-white font-bold mb-3">
-                  <Layers size={18} className="text-cyan-400" /> Key Features
+                <h4 className="flex items-center gap-2 text-slate-900 dark:text-white font-bold mb-3">
+                  <Layers size={18} className="text-cyan-600 dark:text-cyan-400" /> Key Features
                 </h4>
                 <ul className="grid grid-cols-1 gap-2">
                   {project.features.map((f, i) => (
-                    <li key={i} className="flex items-center gap-3 text-slate-400 text-sm">
+                    <li key={i} className="flex items-center gap-3 text-slate-600 dark:text-slate-400 text-sm">
                       <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${project.gradient}`}></span>
                       {f}
                     </li>
@@ -270,12 +270,12 @@ const ProjectModal = ({ project, onClose }) => {
               </div>
 
               <div>
-                <h4 className="flex items-center gap-2 text-white font-bold mb-3">
-                  <Code size={18} className="text-purple-400" /> Tech Stack
+                <h4 className="flex items-center gap-2 text-slate-900 dark:text-white font-bold mb-3">
+                  <Code size={18} className="text-purple-600 dark:text-purple-400" /> Tech Stack
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((t) => (
-                    <span key={t} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 text-slate-200 hover:bg-white/10 transition-colors cursor-default">
+                    <span key={t} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-white/10 transition-colors cursor-default">
                       {t}
                     </span>
                   ))}
@@ -292,7 +292,7 @@ const ProjectModal = ({ project, onClose }) => {
               </a>
               <a
                 href={project.repo}
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-800 text-white font-medium hover:bg-slate-700 transition-all border border-white/5"
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white font-medium hover:bg-slate-300 dark:hover:bg-slate-700 transition-all border border-slate-300 dark:border-white/5"
               >
                 <Github size={18} /> Code
               </a>
@@ -331,14 +331,14 @@ export default function Projects() {
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
-            className="inline-block p-3 rounded-full bg-white/5 border border-white/10 mb-4 backdrop-blur-md"
+            className="inline-block p-3 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 mb-4 backdrop-blur-md"
           >
-            <FolderOpen className="text-cyan-400" size={24} />
+            <FolderOpen className="text-cyan-600 dark:text-cyan-400" size={24} />
           </motion.div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            My Creative <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Portfolio</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
+            My Creative <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-500 dark:from-cyan-400 dark:to-purple-500">Projects</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-lg">
             A collection of applications that solve real-world problems, built with modern tech stacks and a focus on user experience.
           </p>
         </motion.div>
@@ -368,7 +368,7 @@ export default function Projects() {
         {filteredProjects.length === 0 && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className="text-center text-slate-500 py-20"
+            className="text-center text-slate-500 dark:text-slate-500 py-20"
           >
             No projects found in this category.
           </motion.div>

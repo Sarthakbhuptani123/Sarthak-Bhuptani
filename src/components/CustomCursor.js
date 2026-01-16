@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 const CustomCursor = () => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
+    const { theme } = useTheme();
 
     useEffect(() => {
         const updateMousePosition = (e) => {
@@ -34,17 +36,17 @@ const CustomCursor = () => {
             y: mousePosition.y - 16,
             height: 32,
             width: 32,
-            backgroundColor: "rgba(6, 182, 212, 0.3)", // Cyan-500 with opacity
-            border: "1px solid rgba(6, 182, 212, 0.5)",
-            mixBlendMode: "screen"
+            backgroundColor: theme === 'dark' ? "rgba(6, 182, 212, 0.3)" : "rgba(6, 182, 212, 0.2)",
+            border: theme === 'dark' ? "1px solid rgba(6, 182, 212, 0.5)" : "1px solid rgba(6, 182, 212, 0.8)",
+            mixBlendMode: theme === 'dark' ? "screen" : "multiply"
         },
         hover: {
             x: mousePosition.x - 32,
             y: mousePosition.y - 32,
             height: 64,
             width: 64,
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            border: "1px solid rgba(255, 255, 255, 0.5)",
+            backgroundColor: theme === 'dark' ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)",
+            border: theme === 'dark' ? "1px solid rgba(255, 255, 255, 0.5)" : "1px solid rgba(0, 0, 0, 0.2)",
             mixBlendMode: "difference"
         }
     };
@@ -54,12 +56,12 @@ const CustomCursor = () => {
         default: {
             x: mousePosition.x - 4,
             y: mousePosition.y - 4,
-            backgroundColor: "#06b6d4", // Cyan-500
+            backgroundColor: theme === 'dark' ? "#06b6d4" : "#0891b2", // Cyan-500 vs Cyan-600
         },
         hover: {
             x: mousePosition.x - 4,
             y: mousePosition.y - 4,
-            backgroundColor: "#ffffff",
+            backgroundColor: theme === 'dark' ? "#ffffff" : "#000000",
             scale: 0.5
         }
     };

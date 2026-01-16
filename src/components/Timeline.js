@@ -64,13 +64,13 @@ const TimelineItem = ({ data, index }) => {
         >
             {/* Date Desktop - Opposite Side */}
             <div className={`hidden md:flex w-5/12 flex-col justify-center ${isEven ? 'items-start text-left' : 'items-end text-right'}`}>
-                <div className="bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+                <div className="bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
                     <span className={`font-mono text-sm font-bold ${data.color}`}>{data.date}</span>
                 </div>
             </div>
 
             {/* Scale-up Connector Node */}
-            <div className="relative md:absolute md:left-1/2 flex-shrink-0 w-12 h-12 flex items-center justify-center bg-slate-950 border border-white/10 rounded-full z-10 shadow-2xl md:-translate-x-1/2 mr-4 md:mr-0">
+            <div className="relative md:absolute md:left-1/2 flex-shrink-0 w-12 h-12 flex items-center justify-center bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 rounded-full z-10 shadow-2xl md:-translate-x-1/2 mr-4 md:mr-0">
                 <data.icon size={20} className={data.color} />
             </div>
 
@@ -80,21 +80,21 @@ const TimelineItem = ({ data, index }) => {
                     whileHover={{ scale: 1.02 }}
                     className={`p-1 rounded-3xl bg-gradient-to-br from-white/10 to-transparent ${data.glow}`}
                 >
-                    <div className="bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 h-full border border-white/5">
+                    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 h-full border border-slate-200 dark:border-white/5">
 
                         {/* Mobile Date */}
-                        <div className="md:hidden mb-4 inline-block bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                        <div className="md:hidden mb-4 inline-block bg-slate-100 dark:bg-white/5 px-3 py-1 rounded-full border border-slate-200 dark:border-white/10">
                             <span className={`text-xs font-bold ${data.color}`}>{data.date}</span>
                         </div>
 
-                        <h3 className="text-xl md:text-2xl font-bold text-white mb-2">{data.title}</h3>
-                        <div className="flex items-center gap-2 text-slate-400 mb-6 font-medium">
+                        <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-2">{data.title}</h3>
+                        <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400 mb-6 font-medium">
                             <MapPin size={16} className={data.color} /> {data.place}
                         </div>
 
                         <ul className="space-y-3">
                             {data.highlights.map((point, i) => (
-                                <li key={i} className="flex items-start gap-3 text-slate-300 text-sm leading-relaxed">
+                                <li key={i} className="flex items-start gap-3 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
                                     <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${data.color.replace('text-', 'bg-')}`}></span>
                                     {point}
                                 </li>
@@ -124,14 +124,14 @@ const Timeline = () => {
 
                 {/* Header */}
                 <div className="text-center mb-24">
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">My Journey</h2>
+                    <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">My Journey</h2>
                     <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
                 </div>
 
                 <div className="relative">
 
                     {/* The Magic Glowing Line */}
-                    <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-slate-800 -translate-x-1/2 rounded-full overflow-hidden">
+                    <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 -translate-x-1/2 rounded-full overflow-hidden">
                         <motion.div
                             style={{ height: lineHeight }}
                             className="w-full bg-gradient-to-b from-cyan-500 via-blue-500 to-purple-500 shadow-[0_0_20px_rgba(59,130,246,0.6)]"
