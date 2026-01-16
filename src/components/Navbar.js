@@ -1,196 +1,165 @@
 // src/components/Navbar.js
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react"; 
+import { Menu, X, Download, Home, User, Briefcase, Cpu, Mail } from "lucide-react";
 import profileImg from '../assets/profile.jpg';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
 
+  // Define menu items with icons for mobile
   const menuItems = [
-    { label: "Home", href: "#hero" },
-    { label: "About", href: "#about" },
-    { label: "Skills", href: "#skills" },
-    { label: "Projects", href: "#projects" },
-    { label: "Contact", href: "#contact" },
+    { label: "Home", href: "#hero", icon: Home },
+    { label: "About", href: "#about", icon: User },
+    { label: "Journey", href: "#experience", icon: Briefcase }, // Updated to match Timeline ID
+    { label: "Skills", href: "#skills", icon: Cpu },
+    { label: "Projects", href: "#projects", icon: Briefcase },
+    { label: "Contact", href: "#contact", icon: Mail },
   ];
 
-  // Handle Scroll Effect
+  // Handle Scroll to shrink navbar or change style
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Smooth Scroll Logic
   const handleLinkClick = (e, href) => {
     e.preventDefault();
-    const targetId = href;
-    const targetElement = document.querySelector(targetId);
-    const navHeight = 80; 
-
-    if (targetElement) {
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navHeight;
+    const target = document.querySelector(href);
+    if (target) {
+      const offset = 100; // Account for floating nav height
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = target.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: 'smooth'
       });
     }
     setIsMobileMenuOpen(false);
   };
 
-  const navVariants = {
-    hidden: { y: -100, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
-  };
-
-  const mobileMenuVariants = {
-    closed: { 
-      opacity: 0, 
-      y: -20, 
-      pointerEvents: "none",
-      transition: { duration: 0.2 } 
-    },
-    open: { 
-      opacity: 1, 
-      y: 0, 
-      pointerEvents: "auto",
-      transition: { duration: 0.3 } 
-    }
-  };
-
   return (
-    <motion.nav
-      initial="hidden"
-      animate="visible"
-      variants={navVariants}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled || isMobileMenuOpen
-          ? "bg-slate-950/90 backdrop-blur-md border-b border-white/10 shadow-lg py-4" 
-          : "bg-transparent py-6"
-      }`}
-    >
-      <div className="container mx-auto px-6 flex justify-between items-center relative">
-        
-        {/* --- Logo --- */}
-        <a 
-          href="#hero" 
-          onClick={(e) => handleLinkClick(e, '#hero')}
-          className="flex items-center gap-3 group relative z-50"
-        >
-          <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-cyan-500/50 group-hover:border-cyan-400 transition-colors">
-            <img
-              src={profileImg}
-              alt="Logo"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            />
-          </div>
-          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 group-hover:from-cyan-400 group-hover:to-purple-500 transition-all duration-300">
-            Sarthak<span className="text-cyan-500">.</span>
-          </span>
+    <>
+      {/* Desktop Floating Pill Navbar */}
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }} // Delay to wait for preloader
+        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden md:flex items-center gap-1 p-2 rounded-full border border-white/10 bg-slate-900/60 backdrop-blur-xl shadow-2xl transition-all duration-300 ${isScrolled ? "scale-90" : "scale-100"}`}
+      >
+        {/* Logo Avatar */}
+        <a href="#hero" onClick={(e) => handleLinkClick(e, '#hero')} className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white/10 mr-2 hover:scale-110 transition-transform">
+          <img src={profileImg} alt="Sarthak" className="w-full h-full object-cover" />
         </a>
 
-        {/* --- Desktop Menu --- */}
-        <ul className="hidden md:flex items-center gap-2">
-          {menuItems.map((item, index) => (
-            <li 
-              key={item.label}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className="relative"
-            >
+        {/* Links */}
+        <ul className="flex items-center">
+          {menuItems.map((item) => (
+            <li key={item.label}>
               <a
                 href={item.href}
                 onClick={(e) => handleLinkClick(e, item.href)}
-                className="relative z-10 px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                className="relative px-4 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5"
               >
                 {item.label}
               </a>
-              {hoveredIndex === index && (
-                <motion.div
-                  layoutId="navbar-hover"
-                  className="absolute inset-0 bg-white/10 rounded-full -z-0"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                />
-              )}
             </li>
           ))}
-          <li className="ml-4">
-              <a 
-               href="/Bhuptani_Sarthak.pdf"
-               target="_blank"
-               className="px-5 py-2 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all hover:scale-105"
-              >
-                Resume
-              </a>
-          </li>
         </ul>
 
-        {/* --- Mobile Toggle --- */}
-        <div className="md:hidden relative z-50">
-          <button
-            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-            className="p-2 text-slate-300 hover:text-white transition-colors focus:outline-none"
-            aria-label="Toggle Menu"
-          >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
+        {/* Divider */}
+        <div className="w-px h-6 bg-white/10 mx-2"></div>
+
+        {/* Action Button */}
+        <a
+          href="/Bhuptani_Sarthak.pdf"
+          target="_blank"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-xs font-bold uppercase tracking-wider hover:shadow-lg hover:shadow-cyan-500/25 transition-all hover:scale-105"
+        >
+          Resume <Download size={14} />
+        </a>
+      </motion.nav>
+
+
+      {/* Mobile Top Bar (Simplified) */}
+      <div className="md:hidden fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center bg-gradient-to-b from-slate-950/90 to-transparent backdrop-blur-[2px]">
+        <a href="#hero" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full overflow-hidden border border-white/20">
+            <img src={profileImg} alt="Logo" className="w-full h-full object-cover" />
+          </div>
+          <span className="font-bold text-white">Sarthak.</span>
+        </a>
+
+        <button
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="p-2 rounded-full bg-white/10 border border-white/10 text-white active:scale-95 transition-transform"
+        >
+          <Menu size={20} />
+        </button>
       </div>
 
-      {/* --- Mobile Menu Dropdown (Fixed) --- */}
+      {/* Mobile Full Screen Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={mobileMenuVariants}
-            className="absolute top-full left-0 w-full bg-slate-950/95 border-b border-white/10 backdrop-blur-xl shadow-2xl md:hidden overflow-hidden"
+            initial={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
+            animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
+            exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-[60] bg-slate-950 flex flex-col items-center justify-center"
           >
-            <ul className="flex flex-col items-center justify-center gap-6 py-10">
-              {menuItems.map((item) => (
-                <motion.li 
+            {/* Close Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="absolute top-6 right-6 p-4 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Menu Items */}
+            <ul className="flex flex-col gap-6 text-center">
+              {menuItems.map((item, i) => (
+                <motion.li
                   key={item.label}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 + 0.2 }}
                 >
                   <a
                     href={item.href}
                     onClick={(e) => handleLinkClick(e, item.href)}
-                    className="text-xl font-medium text-slate-300 hover:text-cyan-400 transition-colors"
+                    className="text-3xl font-bold text-slate-300 hover:text-cyan-400 transition-colors flex items-center justify-center gap-4"
                   >
+                    <item.icon className="text-slate-600" size={28} />
                     {item.label}
                   </a>
                 </motion.li>
               ))}
-               <motion.li whileHover={{ scale: 1.05 }} className="pt-4">
-                  <a 
-                    href="/Bhuptani_Sarthak.pdf"
-                    target="_blank"
-                    className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold shadow-lg"
-                  >
-                    Download Resume
-                  </a>
-               </motion.li>
             </ul>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="mt-12"
+            >
+              <a
+                href="/Bhuptani_Sarthak.pdf"
+                target="_blank"
+                className="px-8 py-3 rounded-full bg-white text-black font-bold flex items-center gap-2 hover:scale-105 transition-transform"
+              >
+                <Download size={20} /> Download Resume
+              </a>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </>
   );
 };
 

@@ -2,189 +2,140 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
-import { FiDownload, FiMessageSquare, FiGithub, FiLinkedin, FiCode } from 'react-icons/fi';
-import { HiOutlineAcademicCap, HiOutlineBriefcase } from 'react-icons/hi';
-import { SiReact, SiPython, SiJavascript, SiTailwindcss, SiDjango } from 'react-icons/si';
+import { FiDownload, FiMessageSquare, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
+import profileImg from '../assets/profile.jpg'; // Ensure this matches your asset path
 
 function Hero() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 50 } },
-  };
-
-  // Animation for the floating tech icons
-  const floatVariants = (delay) => ({
-    animate: {
-      y: [0, -15, 0],
-      rotate: [0, 5, -5, 0],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        repeatType: "mirror",
-        ease: "easeInOut",
-        delay: delay,
-      }
-    }
-  });
-
   return (
-    <div id="hero" className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-transparent text-white">
-      
-      {/* --- FLOATING TECH ICONS (Background Decor) --- */}
-      {/* These icons float around your main content to give depth */}
-      <div className="absolute inset-0 pointer-events-none max-w-7xl mx-auto">
-        <motion.div variants={floatVariants(0)} animate="animate" className="absolute top-[20%] left-[10%] text-cyan-500/20 text-6xl md:text-8xl"><SiReact /></motion.div>
-        <motion.div variants={floatVariants(1.5)} animate="animate" className="absolute bottom-[25%] left-[15%] text-yellow-500/20 text-5xl md:text-7xl"><SiPython /></motion.div>
-        <motion.div variants={floatVariants(1)} animate="animate" className="absolute top-[25%] right-[15%] text-yellow-300/20 text-5xl md:text-7xl"><SiJavascript /></motion.div>
-        <motion.div variants={floatVariants(2)} animate="animate" className="absolute bottom-[30%] right-[10%] text-emerald-500/20 text-6xl md:text-8xl"><SiDjango /></motion.div>
-        <motion.div variants={floatVariants(0.5)} animate="animate" className="absolute top-[15%] left-[50%] -translate-x-1/2 text-sky-400/20 text-4xl md:text-6xl"><SiTailwindcss /></motion.div>
-      </div>
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-transparent py-20 md:py-0">
 
-      {/* --- MAIN CONTENT --- */}
-      <div className="z-10 container mx-auto px-4 pt-20 pb-32 flex flex-col items-center justify-center min-h-screen">
+      {/* Background Ambience e.g. a soft gradient orb in top-right */}
+      <div className="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-cyan-500/10 rounded-full blur-[80px] md:blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-500/10 rounded-full blur-[80px] md:blur-[120px] pointer-events-none" />
+
+      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center z-10">
+
+        {/* --- LEFT COLUMN: TEXT --- */}
         <motion.div
-          className="max-w-5xl mx-auto text-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="order-2 md:order-1 flex flex-col items-center md:items-start text-center md:text-left"
         >
-          {/* Availability Badge */}
-          <motion.div variants={itemVariants} className="flex justify-center mb-6">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 backdrop-blur-sm">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-              </span>
-              <span className="text-cyan-400 text-sm font-semibold tracking-wide uppercase">Available for Hire</span>
-            </div>
-          </motion.div>
-
-          {/* Headline with Animated Gradient */}
-          <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
-            Hello, I'm <br className="md:hidden" />
-            {/* Added 'animate-gradient' class logic via style for simplicity */}
-            <span 
-              className="relative inline-block mt-2 md:mt-0 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-[length:200%_auto] animate-gradient"
-              style={{ animation: 'gradientMove 3s linear infinite' }} 
-            >
-              Sarthak
+          {/* Greeting Pill */}
+          <div className="mb-6 px-4 py-1.5 rounded-full bg-slate-800/50 border border-white/10 text-cyan-400 text-xs md:text-sm font-semibold tracking-wide inline-flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
             </span>
-          </motion.h1>
+            Available for New Projects
+          </div>
 
-          {/* Typewriter Subheadline */}
-          <motion.div variants={itemVariants} className="h-12 md:h-16 mb-6">
-            <h2 className="text-2xl md:text-4xl font-light text-slate-300">
-              I build things as a{' '}
-              <span className="font-semibold text-cyan-400">
-                <Typewriter
-                  words={['Frontend Developer', 'React Specialist', 'Python Coder', 'FullStack Dev']}
-                  loop={0}
-                  cursor
-                  cursorStyle="_"
-                  typeSpeed={80}
-                  deleteSpeed={50}
-                  delaySpeed={1500}
-                />
-              </span>
-            </h2>
-          </motion.div>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Sarthak.</span>
+            <br />
+            I build <span className="text-slate-500">digital<br className="hidden md:block" /> experiences.</span>
+          </h1>
 
-          {/* Summary */}
-          <motion.p variants={itemVariants} className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-10">
-            Passionate about crafting pixel-perfect digital experiences. I blend 
-            <span className="text-white font-medium"> clean code</span> with 
-            <span className="text-white font-medium"> artistic design</span> to build scalable applications.
-          </motion.p>
+          <div className="text-lg md:text-2xl text-slate-300 mb-8 font-light h-8 md:h-10">
+            <Typewriter
+              words={['Full Stack Developer', 'MERN Stack Specialist', 'Python Automation', 'UI/UX Enthusiast']}
+              loop={0}
+              cursor
+              cursorStyle="_"
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={2000}
+            />
+          </div>
 
-          {/* Stats Cards - Added Glass Hover Effect */}
-          <motion.div 
-            variants={itemVariants} 
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12"
-          >
-            {[
-              { icon: <FiCode />, text: "3+ Projects Completed", color: "text-purple-400" },
-              { icon: <HiOutlineAcademicCap />, text: "Final Year CS Student", color: "text-blue-400" },
-              { icon: <HiOutlineBriefcase />, text: "Open to Work", color: "text-emerald-400" },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ y: -5, scale: 1.02, backgroundColor: "rgba(255,255,255,0.08)" }}
-                className="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md transition-all cursor-default"
-              >
-                <span className={`text-2xl ${stat.color}`}>{stat.icon}</span>
-                <span className="text-sm font-medium text-slate-200">{stat.text}</span>
-              </motion.div>
-            ))}
-          </motion.div>
+          <p className="text-slate-400 text-base md:text-lg max-w-lg leading-relaxed mb-10">
+            A computer engineering student passionate about simplifying complex problems with clean, scalable code. I turn ideas into high-performance web applications.
+          </p>
 
-          {/* Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center md:justify-start">
             <motion.a
-              href="/Bhuptani_Sarthak.pdf"
+              href="/resume.pdf"
               target="_blank"
+              download="Sarthak_Bhuptani_Resume.pdf"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold shadow-lg shadow-cyan-500/25 flex items-center gap-2 group"
+              className="px-7 py-3.5 rounded-xl bg-white text-black font-bold flex items-center justify-center gap-2 hover:bg-cyan-50 transition-colors"
             >
-              <FiDownload className="text-xl group-hover:animate-bounce" /> Download Resume
+              <FiDownload /> Download CV
             </motion.a>
 
-            <motion.a
-              href="#contact"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white font-semibold transition-all flex items-center gap-2"
-            >
-              <FiMessageSquare className="text-xl" /> Let's Connect
-            </motion.a>
-          </motion.div>
-          
-          {/* Social Links */}
-          <motion.div variants={itemVariants} className="mt-16 flex gap-8 justify-center">
-             <a href="https://github.com/Sarthakbhuptani123" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white transition-colors text-3xl hover:scale-110 transform duration-200">
-               <FiGithub />
-             </a>
-             <a href="https://www.linkedin.com/in/sarthak-bhuptani-8a232a247/" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-blue-400 transition-colors text-3xl hover:scale-110 transform duration-200">
-               <FiLinkedin />
-             </a>
-          </motion.div>
-
+            <div className="flex gap-6 items-center justify-center px-4 mt-2 sm:mt-0">
+              <SocialIcon href="https://github.com/Sarthakbhuptani123" icon={<FiGithub />} delay={0} />
+              <SocialIcon href="https://www.linkedin.com/in/sarthak-bhuptani-8a232a247/" icon={<FiLinkedin />} delay={0.1} />
+              <SocialIcon href="#contact" icon={<FiMail />} delay={0.2} />
+            </div>
+          </div>
         </motion.div>
+
+        {/* --- RIGHT COLUMN: IMAGE --- */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="order-1 md:order-2 flex justify-center relative mt-4 md:mt-0"
+        >
+          {/* Abstract Background for Image */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-500 rounded-[2rem] rotate-6 opacity-20 scale-105 blur-lg"></div>
+
+          <div className="relative w-64 h-64 md:w-96 md:h-96 rounded-[2rem] overflow-hidden border-2 border-white/10 shadow-2xl bg-slate-900 group">
+            <img
+              src={profileImg}
+              alt="Sarthak Bhuptani"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+            />
+
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+
+            {/* Floating Tag */}
+            <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 p-3 md:p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/10">
+              <div className="flex justify-between items-center">
+                <div className="text-left">
+                  <p className="text-[10px] md:text-xs text-slate-300 uppercase tracking-wider">Located in</p>
+                  <p className="text-white font-semibold text-sm md:text-base">India 🇮🇳</p>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-black">
+                  <FiMessageSquare size={14} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
       </div>
 
-      {/* Modern Mouse Scroll Indicator */}
-      <motion.div 
+      {/* Scroll indicator - Hidden on mobile to save space */}
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1.5 }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-60 pointer-events-none"
+        transition={{ delay: 1.5, duration: 1 }}
+        className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 opacity-50"
       >
-        <div className="w-6 h-10 border-2 border-slate-400 rounded-full flex justify-center p-1">
-            <motion.div 
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
-                className="w-1.5 h-1.5 bg-cyan-400 rounded-full"
-            />
-        </div>
+        <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-slate-400 to-transparent"></div>
       </motion.div>
-
-      {/* Inline styles for the gradient animation */}
-      <style>{`
-        @keyframes gradientMove {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 100% 50%; }
-        }
-      `}</style>
-    </div>
+    </section>
   );
 }
+
+const SocialIcon = ({ href, icon, delay }) => (
+  <motion.a
+    href={href}
+    target="_blank"
+    rel="noreferrer"
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.5 + delay }}
+    whileHover={{ y: -3, color: "#22d3ee" }}
+    className="text-2xl text-slate-400 transition-colors"
+  >
+    {icon}
+  </motion.a>
+);
 
 export default Hero;

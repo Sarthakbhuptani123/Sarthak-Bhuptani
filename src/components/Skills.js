@@ -1,132 +1,169 @@
 // src/components/Skills.js
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
-import { 
-  SiReact, SiPython, SiJavascript, SiHtml5, SiCss3, SiTailwindcss, 
+import React, { useRef, useState } from 'react';
+import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
+import { Sparkles, Code2, Database, Terminal, Wrench } from 'lucide-react';
+import {
+  SiReact, SiPython, SiJavascript, SiHtml5, SiCss3, SiTailwindcss,
   SiDjango, SiMysql, SiGit, SiGithub, SiNetlify, SiVisualstudiocode,
-  SiNodedotjs, SiMongodb 
+  SiNodedotjs, SiMongodb, SiVercel
 } from 'react-icons/si';
 
-const skills = [
-  { name: "React.js", icon: SiReact, color: "#61DAFB", level: 90 },
-  { name: "Node.js", icon: SiNodedotjs, color: "#339933", level: 85 }, // Added Node.js
-  { name: "MongoDB", icon: SiMongodb, color: "#47A248", level: 80 },   // Added MongoDB
-  { name: "Python", icon: SiPython, color: "#3776AB", level: 85 },
-  { name: "Django", icon: SiDjango, color: "#092E20", level: 80 },
-  { name: "Tailwind", icon: SiTailwindcss, color: "#38B2AC", level: 95 },
-  { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E", level: 88 },
-  { name: "MySQL", icon: SiMysql, color: "#4479A1", level: 75 },
-  { name: "Git", icon: SiGit, color: "#F05032", level: 85 },
-  { name: "GitHub", icon: SiGithub, color: "#ffffff", level: 90 },
-  { name: "VS Code", icon: SiVisualstudiocode, color: "#007ACC", level: 95 },
-  { name: "HTML5", icon: SiHtml5, color: "#E34F26", level: 100 },
-  { name: "CSS3", icon: SiCss3, color: "#1572B6", level: 95 },
-  { name: "Netlify", icon: SiNetlify, color: "#00C7B7", level: 70 },
-];
+const SkillPill = ({ skill, index }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.05 + 0.2 }}
+      whileHover={{
+        scale: 1.05,
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        borderColor: "rgba(255, 255, 255, 0.3)"
+      }}
+      className="flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-800/50 border border-white/5 backdrop-blur-sm transition-colors cursor-pointer group"
+    >
+      <div
+        className="p-1.5 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors"
+        style={{ color: skill.color }}
+      >
+        <skill.icon className="text-lg" />
+      </div>
+      <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
+        {skill.name}
+      </span>
+    </motion.div>
+  );
+};
 
-const Skills = () => {
-  // Container Animation (Stagger)
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
+const SpotlightCard = ({ title, icon: Icon, skills, delay, spotlightColor }) => {
+  let mouseX = useMotionValue(0);
+  let mouseY = useMotionValue(0);
 
-  // Card Entrance Animation
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.5, ease: "easeOut" } 
-    }
-  };
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    let { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
   return (
-    <section id="skills" className="relative py-24 px-6 bg-transparent overflow-hidden">
-      
-      <div className="max-w-6xl mx-auto relative z-10">
-        
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.5 }}
+      onMouseMove={handleMouseMove}
+      className="group relative border border-white/10 bg-slate-900/40 rounded-3xl p-8 overflow-hidden"
+    >
+      {/* Spotlight Effect */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${mouseX}px ${mouseY}px,
+              ${spotlightColor},
+              transparent 80%
+            )
+          `,
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform duration-300">
+            <Icon size={24} />
+            {/* Icon Glow */}
+            <div className="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <h3 className="text-2xl font-bold text-white">{title}</h3>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          {skills.map((skill, idx) => (
+            <SkillPill key={skill.name} skill={skill} index={idx} />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const Skills = () => {
+  const categories = [
+    {
+      title: "Frontend Development",
+      icon: Code2,
+      spotlightColor: "rgba(6, 182, 212, 0.15)", // Cyan
+      skills: [
+        { name: "React.js", icon: SiReact, color: "#61DAFB" },
+        { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
+        { name: "Tailwind CSS", icon: SiTailwindcss, color: "#38B2AC" },
+        { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
+        { name: "CSS3", icon: SiCss3, color: "#1572B6" },
+      ]
+    },
+    {
+      title: "Backend Core",
+      icon: Database,
+      spotlightColor: "rgba(168, 85, 247, 0.15)", // Purple
+      skills: [
+        { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
+        { name: "Python", icon: SiPython, color: "#3776AB" },
+        { name: "Django", icon: SiDjango, color: "#092E20" },
+        { name: "MongoDB", icon: SiMongodb, color: "#47A248" },
+        { name: "MySQL", icon: SiMysql, color: "#4479A1" },
+      ]
+    },
+    {
+      title: "DevOps & Tools",
+      icon: Wrench,
+      spotlightColor: "rgba(249, 115, 22, 0.15)", // Orange
+      skills: [
+        { name: "Git", icon: SiGit, color: "#F05032" },
+        { name: "GitHub", icon: SiGithub, color: "#ffffff" },
+        { name: "VS Code", icon: SiVisualstudiocode, color: "#007ACC" },
+        { name: "Vercel", icon: SiVercel, color: "#FFFFFF" },
+        { name: "Netlify", icon: SiNetlify, color: "#00C7B7" },
+      ]
+    }
+  ];
+
+  return (
+    <section id="skills" className="relative py-32 px-6 bg-transparent overflow-hidden">
+
+      {/* Background Decor */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-semibold tracking-wide uppercase mb-4">
             <Sparkles size={14} /> My Expertise
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Skillset</span>
           </h2>
+          <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+            A diverse stack of technologies I use to bring ideas to life, from pixel-perfect UIs to scalable backend logic.
+          </p>
         </motion.div>
 
-        {/* --- SKILLS GRID --- */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-        >
-          {skills.map((skill) => (
-            <motion.div
-              key={skill.name}
-              variants={itemVariants}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="group relative"
-            >
-              {/* Card Container */}
-              <div className="h-full bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl p-6 transition-all duration-300 group-hover:bg-slate-900/60 group-hover:border-white/10 overflow-hidden">
-                
-                {/* Hover Glow Gradient (Uses Skill Color) */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
-                  style={{ background: `radial-gradient(circle at center, ${skill.color}, transparent 70%)` }}
-                ></div>
-
-                {/* Content */}
-                <div className="relative z-10 flex flex-col items-center text-center">
-                  
-                  {/* Icon */}
-                  <div 
-                    className="mb-4 text-4xl transition-transform duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"
-                    style={{ color: skill.color }}
-                  >
-                    <skill.icon />
-                  </div>
-
-                  {/* Name */}
-                  <h3 className="font-bold text-slate-200 text-lg mb-1">{skill.name}</h3>
-                  <p className="text-xs text-slate-500 font-mono mb-4">{skill.level}% Proficiency</p>
-
-                  {/* Progress Bar Track */}
-                  <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                    {/* Progress Bar Fill */}
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
-                      className="h-full rounded-full"
-                      style={{ 
-                        backgroundColor: skill.color,
-                        boxShadow: `0 0 10px ${skill.color}` 
-                      }}
-                    />
-                  </div>
-
-                </div>
-              </div>
-            </motion.div>
+        {/* --- SKILLS MASONRY GRID --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {categories.map((category, index) => (
+            <SpotlightCard
+              key={index}
+              {...category}
+              delay={index * 0.1}
+            />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

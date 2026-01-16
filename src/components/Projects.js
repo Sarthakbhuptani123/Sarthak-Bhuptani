@@ -1,14 +1,14 @@
 // src/components/Projects.js
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import React, { useState, useRef, useMemo } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, LayoutGroup } from 'framer-motion';
 import { ExternalLink, Github, X, Layers, Code, Sparkles, FolderOpen } from 'lucide-react';
 
 // Import images
-import stockImg from '../assets/stock.jpg';
-import voiceImg from '../assets/voice.jpg';
-import libraryImg from '../assets/library.jpg';
-import newsImg from '../assets/news.jpg';
-import quizeImg from '../assets/quize.jpg';
+import stockImg from '../assets/stock.png';
+import voiceImg from '../assets/voice.png';
+import libraryImg from '../assets/library.png';
+import newsImg from '../assets/news.png';
+import quizeImg from '../assets/quiz.png';
 
 // --- DATA ---
 const projects = [
@@ -16,6 +16,7 @@ const projects = [
     title: 'Stock Predictor',
     description: 'ML-enabled web app forecasting market trends with LSTM models and interactive Plotly visualizations.',
     tech: ['Python', 'Django', 'ML', 'Plotly'],
+    category: 'Python',
     gradient: 'from-cyan-400 via-blue-500 to-purple-600',
     icon: '📈',
     img: stockImg,
@@ -27,6 +28,7 @@ const projects = [
     title: 'Voice Assistant',
     description: 'Python-based AI assistant that processes voice commands for web search, media control, and automation.',
     tech: ['Python', 'NLP', 'SpeechRec', 'APIs'],
+    category: 'Python',
     gradient: 'from-pink-400 via-rose-500 to-red-600',
     icon: '🎤',
     img: voiceImg,
@@ -38,6 +40,7 @@ const projects = [
     title: 'News Hub',
     description: 'Responsive React news aggregator featuring real-time headlines, category filtering, and instant search.',
     tech: ['React.js', 'Tailwind', 'REST API'],
+    category: 'React',
     gradient: 'from-amber-400 via-orange-500 to-red-600',
     icon: '📰',
     img: newsImg,
@@ -49,6 +52,7 @@ const projects = [
     title: 'Library Manager',
     description: 'Comprehensive system for managing academic library resources, student records, and fine calculations.',
     tech: ['PHP', 'MySQL', 'HTML/CSS'],
+    category: 'Full Stack',
     gradient: 'from-green-400 via-emerald-500 to-teal-600',
     icon: '📚',
     img: libraryImg,
@@ -60,6 +64,7 @@ const projects = [
     title: 'Quize Platform',
     description: 'Robust online examination system with teacher dashboards, timed quizzes, and automated grading.',
     tech: ['Django', 'Python', 'SQLite'],
+    category: 'Full Stack',
     gradient: 'from-violet-400 via-fuchsia-500 to-pink-600',
     icon: '🧩',
     img: quizeImg,
@@ -69,14 +74,33 @@ const projects = [
   }
 ];
 
-// --- COMPONENTS ---
+const FilterTabs = ({ tabs, activeTab, setActiveTab }) => {
+  return (
+    <div className="flex flex-wrap justify-center gap-2 mb-12">
+      {tabs.map((tab) => (
+        <button
+          key={tab}
+          onClick={() => setActiveTab(tab)}
+          className={`relative px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeTab === tab
+            ? 'text-white'
+            : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+        >
+          {activeTab === tab && (
+            <motion.div
+              layoutId="active-pill"
+              className="absolute inset-0 bg-slate-800 border border-white/10 rounded-full shadow-lg"
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            />
+          )}
+          <span className="relative z-10">{tab}</span>
+        </button>
+      ))}
+    </div>
+  );
+};
 
-/**
- * 3D Tilt Card Component
- */
-const ProjectCard = ({ project, index, onClick }) => {
-  const ref = useRef(null);
-
+const ProjectCard = React.forwardRef(({ project, onClick }, ref) => {
   // Motion values for 3D Tilt
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -88,7 +112,7 @@ const ProjectCard = ({ project, index, onClick }) => {
     const { left, top, width, height } = currentTarget.getBoundingClientRect();
     const xPct = (clientX - left) / width - 0.5;
     const yPct = (clientY - top) / height - 0.5;
-    
+
     // Update Tilt values
     x.set(xPct);
     y.set(yPct);
@@ -100,57 +124,53 @@ const ProjectCard = ({ project, index, onClick }) => {
   }
 
   // Transform math
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["7deg", "-7deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-7deg", "7deg"]);
-  const brightness = useTransform(mouseY, [-0.5, 0.5], [1.1, 0.9]);
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["5deg", "-5deg"]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-5deg", "5deg"]);
 
   return (
     <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.3 }}
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
       style={{
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
       }}
-      className="relative h-full w-full cursor-pointer perspective-1000"
+      className="relative h-full w-full cursor-pointer perspective-1000 group"
     >
-      <motion.div 
-        style={{ filter: `brightness(${brightness})` }}
-        className="group relative h-full bg-slate-900/40 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-xl transform-gpu transition-all duration-300 hover:border-white/20"
-      >
+      <div className="relative h-full bg-slate-900/40 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-xl transform-gpu transition-all duration-300 hover:border-cyan-500/30 group-hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]">
+
         {/* Spotlight Gradient Layer */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none">
           <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-10 blur-xl`}></div>
         </div>
 
         {/* Image Section */}
-        <div className="relative h-52 overflow-hidden z-10">
+        <div className="relative h-48 overflow-hidden z-10">
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent z-10" />
           <motion.img
             src={project.img}
             alt={project.title}
-            className="w-full h-full object-cover"
-            whileHover={{ scale: 1.1 }}
-            transition={{ duration: 0.6 }}
+            className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute top-3 right-3 z-20 bg-slate-900/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-xs font-bold text-white flex items-center gap-1 shadow-lg">
-             {project.icon} <span className="hidden sm:inline">Project</span>
+            {project.icon} <span className="hidden sm:inline">Project</span>
           </div>
         </div>
 
         {/* Content Section */}
-        <div className="relative p-6 z-10 flex flex-col h-[calc(100%-13rem)]">
-          <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+        <div className="relative p-6 z-10 flex flex-col h-[calc(100%-12rem)]">
+          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
             {project.title}
           </h3>
-          
+
           <p className="text-slate-400 text-sm mb-4 line-clamp-3 leading-relaxed">
             {project.description}
           </p>
@@ -162,23 +182,23 @@ const ProjectCard = ({ project, index, onClick }) => {
               </span>
             ))}
             {project.tech.length > 3 && (
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
-                    +{project.tech.length - 3}
-                </span>
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
+                +{project.tech.length - 3}
+              </span>
             )}
           </div>
-          
+
           {/* Hover CTA */}
           <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300">
-             <div className="p-2 bg-white text-black rounded-full shadow-lg shadow-cyan-500/50">
-                <ExternalLink size={20} />
-             </div>
+            <div className="p-2 bg-white text-black rounded-full shadow-lg shadow-cyan-500/50">
+              <ExternalLink size={20} />
+            </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
-};
+});
 
 const ProjectModal = ({ project, onClose }) => {
   if (!project) return null;
@@ -205,29 +225,29 @@ const ProjectModal = ({ project, onClose }) => {
         >
           {/* Left Side: Visuals */}
           <div className="relative h-64 md:h-auto overflow-hidden">
-            <img 
-              src={project.img} 
-              alt={project.title} 
+            <img
+              src={project.img}
+              alt={project.title}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-90 md:opacity-60" />
-            
+
             <div className="absolute bottom-0 left-0 p-8 w-full">
-               <h2 className="text-4xl md:text-5xl font-black text-white mb-2 drop-shadow-lg">{project.title}</h2>
-               <div className={`h-1.5 w-24 rounded-full bg-gradient-to-r ${project.gradient}`}></div>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-2 drop-shadow-lg">{project.title}</h2>
+              <div className={`h-1.5 w-24 rounded-full bg-gradient-to-r ${project.gradient}`}></div>
             </div>
           </div>
 
           {/* Right Side: Info */}
           <div className="p-8 md:p-10 flex flex-col bg-slate-900/50">
             <div className="flex justify-between items-start mb-6">
-               <div className="flex items-center gap-2 text-yellow-400">
-                  <Sparkles size={20} className="animate-pulse"/>
-                  <span className="text-sm font-bold uppercase tracking-widest text-slate-400">Featured Project</span>
-               </div>
-               <button onClick={onClose} className="p-2 bg-white/5 border border-white/10 rounded-full hover:bg-red-500/80 hover:text-white hover:border-red-500 transition-all text-slate-400">
-                 <X size={20} />
-               </button>
+              <div className="flex items-center gap-2 text-yellow-400">
+                <Sparkles size={20} className="animate-pulse" />
+                <span className="text-sm font-bold uppercase tracking-widest text-slate-400">Featured Project</span>
+              </div>
+              <button onClick={onClose} className="p-2 bg-white/5 border border-white/10 rounded-full hover:bg-red-500/80 hover:text-white hover:border-red-500 transition-all text-slate-400">
+                <X size={20} />
+              </button>
             </div>
 
             <p className="text-slate-300 text-lg leading-relaxed mb-8">
@@ -237,7 +257,7 @@ const ProjectModal = ({ project, onClose }) => {
             <div className="space-y-6 mb-8">
               <div>
                 <h4 className="flex items-center gap-2 text-white font-bold mb-3">
-                  <Layers size={18} className="text-cyan-400"/> Key Features
+                  <Layers size={18} className="text-cyan-400" /> Key Features
                 </h4>
                 <ul className="grid grid-cols-1 gap-2">
                   {project.features.map((f, i) => (
@@ -251,7 +271,7 @@ const ProjectModal = ({ project, onClose }) => {
 
               <div>
                 <h4 className="flex items-center gap-2 text-white font-bold mb-3">
-                  <Code size={18} className="text-purple-400"/> Tech Stack
+                  <Code size={18} className="text-purple-400" /> Tech Stack
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((t) => (
@@ -264,14 +284,14 @@ const ProjectModal = ({ project, onClose }) => {
             </div>
 
             <div className="mt-auto flex gap-4 pt-6 border-t border-white/5">
-              <a 
-                href={project.demo} 
+              <a
+                href={project.demo}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r ${project.gradient} text-white font-bold shadow-lg hover:shadow-cyan-500/25 hover:-translate-y-1 transition-all`}
               >
                 <ExternalLink size={18} /> Live Demo
               </a>
-              <a 
-                href={project.repo} 
+              <a
+                href={project.repo}
                 className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-800 text-white font-medium hover:bg-slate-700 transition-all border border-white/5"
               >
                 <Github size={18} /> Code
@@ -286,20 +306,29 @@ const ProjectModal = ({ project, onClose }) => {
 
 export default function Projects() {
   const [selected, setSelected] = useState(null);
+  const [activeTab, setActiveTab] = useState('All');
+
+  // Filter Logic
+  const tabs = ['All', 'Full Stack', 'React', 'Python'];
+
+  const filteredProjects = useMemo(() => {
+    if (activeTab === 'All') return projects;
+    return projects.filter(p => p.category === activeTab);
+  }, [activeTab]);
 
   return (
     <section id="projects" className="relative py-24 bg-transparent overflow-hidden">
-      
+
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
+
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <motion.div 
+          <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             className="inline-block p-3 rounded-full bg-white/5 border border-white/10 mb-4 backdrop-blur-md"
@@ -314,17 +343,37 @@ export default function Projects() {
           </p>
         </motion.div>
 
-        {/* 3D Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000">
-          {projects.map((project, index) => (
-            <ProjectCard 
-              key={index} 
-              project={project} 
-              index={index} 
-              onClick={() => setSelected(project)} 
-            />
-          ))}
-        </div>
+        {/* Filters */}
+        <FilterTabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+
+        {/* Animated Grid */}
+        <LayoutGroup>
+          <motion.div
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000"
+          >
+            <AnimatePresence mode='popLayout'>
+              {filteredProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.title} // Use Title as unique key for stable ID across filters
+                  project={project}
+                  onClick={() => setSelected(project)}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </LayoutGroup>
+
+        {/* Empty State Help */}
+        {filteredProjects.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            className="text-center text-slate-500 py-20"
+          >
+            No projects found in this category.
+          </motion.div>
+        )}
+
       </div>
 
       {/* Modal */}
