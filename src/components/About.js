@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Code, Rocket, ArrowRight } from 'lucide-react';
+
 import profileImg from '../assets/profile.jpg'; // Optional: Use if you want to show your face again
 
 const About = () => {
@@ -40,7 +41,7 @@ const About = () => {
             </div>
 
             {/* Education Highlight Box */}
-            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-start gap-4">
+            <div className="p-6 rounded-2xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 flex items-start gap-4">
               <div className="p-3 bg-slate-200 dark:bg-slate-800 rounded-xl text-slate-900 dark:text-white">
                 <GraduationCap size={24} />
               </div>
@@ -63,7 +64,7 @@ const About = () => {
           <div className="grid grid-cols-1 gap-6">
 
             {/* Card 1: What I brings */}
-            <div className="p-8 rounded-3xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 relative overflow-hidden group">
+            <div className="p-8 rounded-3xl bg-white/60 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200 dark:border-white/10 relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Code size={100} />
               </div>
@@ -85,7 +86,7 @@ const About = () => {
             </div>
 
             {/* Card 2: Current Status */}
-            <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 flex items-center justify-between">
+            <div className="p-6 rounded-3xl bg-white/60 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200 dark:border-white/10 flex items-center justify-between">
               <div>
                 <p className="text-slate-500 dark:text-slate-400 text-sm uppercase tracking-wider mb-1">Current Status</p>
                 <p className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -95,7 +96,10 @@ const About = () => {
               </div>
             </div>
 
+
           </div>
+
+
 
         </motion.div>
       </div>

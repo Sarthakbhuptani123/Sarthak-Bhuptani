@@ -1,6 +1,7 @@
 // src/components/Navbar.js
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Download, Home, User, Briefcase, Cpu, Mail, Sun, Moon, Github, Linkedin } from "lucide-react";
 import profileImg from '../assets/profile.jpg';
 import { useTheme } from '../context/ThemeContext';
@@ -9,15 +10,18 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
 
-  // Define menu items
+  // Define menu items with ROUTES
   const menuItems = [
-    { label: "Home", href: "#hero", icon: Home },
-    { label: "About", href: "#about", icon: User },
-    { label: "Journey", href: "#experience", icon: Briefcase },
-    { label: "Skills", href: "#skills", icon: Cpu },
-    { label: "Projects", href: "#projects", icon: Briefcase },
-    { label: "Contact", href: "#contact", icon: Mail },
+    { label: "Home", href: "/", icon: Home },
+    { label: "About", href: "/about", icon: User },
+    // "Journey" combined into About page usually, but kept separate if desired. 
+    // Since App.js grouped Timeline into AboutPage, let's point "Journey" to /about or just hide it? 
+    // Let's keep it consistent: About Page has both.
+    { label: "Skills", href: "/skills", icon: Cpu },
+    { label: "Projects", href: "/projects", icon: Briefcase },
+    { label: "Contact", href: "/contact", icon: Mail },
   ];
 
   useEffect(() => {
@@ -26,23 +30,8 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleLinkClick = (e, href) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      const offset = 100;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = target.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-    setIsMobileMenuOpen(false);
-  };
+  // Check if link is active
+  const isActive = (path) => location.pathname === path;
 
   return (
     <>
@@ -54,21 +43,23 @@ const Navbar = () => {
         className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] hidden md:flex items-center gap-0.5 p-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl shadow-2xl transition-all duration-300 max-w-[95vw] ${isScrolled ? "scale-90" : "scale-100"}`}
       >
         {/* Logo Avatar */}
-        <a href="#hero" onClick={(e) => handleLinkClick(e, '#hero')} className="relative w-9 h-9 lg:w-10 lg:h-10 rounded-full overflow-hidden border-2 border-slate-200 dark:border-white/10 mr-1 hover:scale-110 transition-transform flex-shrink-0">
+        <Link to="/" className="relative w-9 h-9 lg:w-10 lg:h-10 rounded-full overflow-hidden border-2 border-slate-200 dark:border-white/10 mr-1 hover:scale-110 transition-transform flex-shrink-0">
           <img src={profileImg} alt="Sarthak" className="w-full h-full object-cover" />
-        </a>
+        </Link>
 
         {/* Links */}
         <ul className="flex items-center gap-0.5">
           {menuItems.map((item) => (
             <li key={item.label}>
-              <a
-                href={item.href}
-                onClick={(e) => handleLinkClick(e, item.href)}
-                className="relative px-2 lg:px-3 py-1.5 lg:py-2 text-[11px] lg:text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-full hover:bg-slate-100 dark:hover:bg-white/5 whitespace-nowrap"
+              <Link
+                to={item.href}
+                className={`relative px-2 lg:px-3 py-1.5 lg:py-2 text-[11px] lg:text-xs font-medium transition-colors rounded-full whitespace-nowrap ${isActive(item.href)
+                  ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5"
+                  }`}
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -103,12 +94,12 @@ const Navbar = () => {
         transition={{ delay: 0.2 }}
         className="md:hidden fixed top-4 left-4 right-4 z-[100] flex justify-between items-center p-2.5 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-white/10 shadow-lg"
       >
-        <a href="#hero" className="flex items-center gap-2 pl-2">
+        <Link to="/" className="flex items-center gap-2 pl-2">
           <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-200 dark:border-white/20">
             <img src={profileImg} alt="Logo" className="w-full h-full object-cover" />
           </div>
           <span className="font-bold text-slate-800 dark:text-slate-100">Sarthak.</span>
-        </a>
+        </Link>
 
         <div className="flex items-center gap-2 pr-1">
           <button
@@ -164,18 +155,18 @@ const Navbar = () => {
               {/* Links List */}
               <div className="flex-1 flex flex-col p-4 gap-2 overflow-y-auto">
                 {menuItems.map((item, i) => (
-                  <motion.a
+                  <Link
                     key={item.label}
-                    href={item.href}
-                    onClick={(e) => handleLinkClick(e, item.href)}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 + 0.3, duration: 0.4, ease: "easeOut" }}
-                    className="group flex items-center gap-3 px-5 py-3.5 rounded-xl text-base font-medium text-slate-600 dark:text-slate-400 hover:bg-cyan-50 dark:hover:bg-cyan-900/10 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all"
+                    to={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`group flex items-center gap-3 px-5 py-3.5 rounded-xl text-base font-medium transition-all ${isActive(item.href)
+                      ? "bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400"
+                      : "text-slate-600 dark:text-slate-400 hover:bg-cyan-50 dark:hover:bg-cyan-900/10 hover:text-cyan-600 dark:hover:text-cyan-400"
+                      }`}
                   >
-                    <item.icon size={20} className="text-slate-400 dark:text-slate-600 group-hover:text-cyan-500 dark:group-hover:text-cyan-400" />
+                    <item.icon size={20} className={isActive(item.href) ? "text-cyan-600 dark:text-cyan-400" : "text-slate-400 dark:text-slate-600 group-hover:text-cyan-500 dark:group-hover:text-cyan-400"} />
                     {item.label}
-                  </motion.a>
+                  </Link>
                 ))}
               </div>
 

@@ -118,7 +118,7 @@ const Timeline = () => {
     const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
     return (
-        <section id="experience" className="relative py-24 px-6 overflow-hidden">
+        <section id="experience" className="relative py-24 px-6 bg-transparent overflow-hidden">
 
             <div ref={ref} className="max-w-6xl mx-auto relative z-10">
 
