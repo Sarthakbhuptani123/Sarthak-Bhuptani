@@ -1,6 +1,7 @@
 // src/components/AnimatedBackground.js
 import React, { useEffect } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
+import circuitBg from '../assets/binary-rain.png';
 
 const AnimatedBackground = () => {
   const mouseX = useMotionValue(0);
@@ -22,17 +23,25 @@ const AnimatedBackground = () => {
   }, [mouseX, mouseY]);
 
   return (
-    <div className="fixed inset-0 -z-50 overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+    <div className="fixed inset-0 -z-50 overflow-hidden bg-slate-100 dark:bg-slate-950 transition-colors duration-600">
 
-      {/* 0. Background Image Overlay */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?q=80&w=2832&auto=format&fit=crop"
-          alt="Background Texture"
-          className="w-full h-full object-cover opacity-90 dark:opacity-80 mix-blend-overlay dark:mix-blend-soft-light transition-opacity duration-700"
-        />
+      {/* 0. Infinite Circuit Board Scanning Background */}
+      <div className="absolute inset-0 z-0 text-left">
+        <motion.div
+          className="absolute inset-0 w-full h-[200%]"
+          animate={{ y: ["0%", "-50%"] }}
+          transition={{
+            duration: 60,
+            ease: "linear",
+            repeat: Infinity
+          }}
+        >
+          <div className="w-full h-[50%] opacity-20 dark:opacity-30" style={{ backgroundImage: `url(${circuitBg})`, backgroundSize: 'cover' }}></div>
+          <div className="w-full h-[50%] opacity-20 dark:opacity-30" style={{ backgroundImage: `url(${circuitBg})`, backgroundSize: 'cover' }}></div>
+        </motion.div>
+
         {/* Darken overlay for better text readability */}
-        <div className="absolute inset-0 bg-slate-50/80 dark:bg-slate-950/80"></div>
+        <div className="absolute inset-0 bg-slate-50/90 dark:bg-[#0a0a0a]/70"></div>
       </div>
 
       {/* 1. Subtle Grid Pattern */}
