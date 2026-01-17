@@ -20,25 +20,29 @@ const About = () => {
 
           {/* --- LEFT: The Fresh Narrative --- */}
           <div className="space-y-8">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-6">
-                <Rocket size={14} className="animate-pulse" /> Aspiring Developer
+            <div className="space-y-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-6">
+                  <Rocket size={14} className="animate-pulse" /> Full-Stack Developer
+                </div>
+
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
+                  Building <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">real-world software</span> with purpose.
+                </h2>
+
+                <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-6">
+                  Hi, I’m Sarthak — a Final Year Computer Engineering student at LDRP Institute of Technology with a strong focus on
+                  full-stack web development and modern JavaScript ecosystems.
+                </p>
+
+                <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+                  I focus on building scalable, user-centric applications using React, Node.js, Express, and MongoDB.
+                  Beyond academics, I actively work on real-world projects, treating each one as an opportunity to improve
+                  code quality, system design, and problem-solving skills.
+                </p>
               </div>
-
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
-                Eager to <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">learn, build, and grow.</span>
-              </h2>
-
-              <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-6">
-                Hi, I'm Sarthak! I am a Final Year Computer Engineering student at LDRP Institute of Technology.
-                While I may be early in my career, my passion for technology is limitless.
-              </p>
-
-              <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-                I have spent my academic years not just passing exams, but <strong>building real projects</strong>.
-                From automating tasks with Python to crafting responsive React UIs, I have treated every assignment as an opportunity to master the craft of software engineering.
-              </p>
             </div>
+
 
             {/* Education Highlight Box */}
             <div className="p-6 rounded-2xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 flex items-start gap-4">
