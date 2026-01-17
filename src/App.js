@@ -12,6 +12,9 @@ import AnimatedBackground from './components/AnimatedBackground';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import Preloader from './components/Preloader';
+import Footer from './components/Footer';
+import FloatingShapes from './components/FloatingShapes';
+import CommandPalette from './components/CommandPalette';
 
 function App() {
   return (
@@ -21,7 +24,9 @@ function App() {
 
         {/* Global Background */}
         <AnimatedBackground />
+        <FloatingShapes />
         <CustomCursor />
+        <CommandPalette />
         <ScrollProgress />
 
         {/* Navigation */}
@@ -47,10 +52,13 @@ function App() {
             <Projects />
           </section>
 
+
           <section id="contact" className="pt-20">
             <Contact />
           </section>
         </main>
+
+        <Footer />
       </div>
     </Router>
   );
