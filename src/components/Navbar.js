@@ -12,16 +12,13 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
-  // Define menu items with ROUTES
+  // Define menu items with Anchor Links
   const menuItems = [
-    { label: "Home", href: "/", icon: Home },
-    { label: "About", href: "/about", icon: User },
-    // "Journey" combined into About page usually, but kept separate if desired. 
-    // Since App.js grouped Timeline into AboutPage, let's point "Journey" to /about or just hide it? 
-    // Let's keep it consistent: About Page has both.
-    { label: "Skills", href: "/skills", icon: Cpu },
-    { label: "Projects", href: "/projects", icon: Briefcase },
-    { label: "Contact", href: "/contact", icon: Mail },
+    { label: "Home", href: "#home", icon: Home },
+    { label: "About", href: "#about", icon: User },
+    { label: "Skills", href: "#skills", icon: Cpu },
+    { label: "Projects", href: "#projects", icon: Briefcase },
+    { label: "Contact", href: "#contact", icon: Mail },
   ];
 
   useEffect(() => {
@@ -30,8 +27,16 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Check if link is active
-  const isActive = (path) => location.pathname === path;
+  // Smooth scroll handler
+  const handleScrollTo = (e, href) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      const yOffset = -80; // Offset for fixed header
+      const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
@@ -43,23 +48,21 @@ const Navbar = () => {
         className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] hidden md:flex items-center gap-0.5 p-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl shadow-2xl transition-all duration-300 max-w-[95vw] ${isScrolled ? "scale-90" : "scale-100"}`}
       >
         {/* Logo Avatar */}
-        <Link to="/" className="relative w-9 h-9 lg:w-10 lg:h-10 rounded-full overflow-hidden border-2 border-slate-200 dark:border-white/10 mr-1 hover:scale-110 transition-transform flex-shrink-0">
+        <a href="#home" onClick={(e) => handleScrollTo(e, '#home')} className="relative w-9 h-9 lg:w-10 lg:h-10 rounded-full overflow-hidden border-2 border-slate-200 dark:border-white/10 mr-1 hover:scale-110 transition-transform flex-shrink-0">
           <img src={profileImg} alt="Sarthak" className="w-full h-full object-cover" />
-        </Link>
+        </a>
 
         {/* Links */}
         <ul className="flex items-center gap-0.5">
           {menuItems.map((item) => (
             <li key={item.label}>
-              <Link
-                to={item.href}
-                className={`relative px-2 lg:px-3 py-1.5 lg:py-2 text-[11px] lg:text-xs font-medium transition-colors rounded-full whitespace-nowrap ${isActive(item.href)
-                  ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5"
-                  }`}
+              <a
+                href={item.href}
+                onClick={(e) => handleScrollTo(e, item.href)}
+                className="relative px-2 lg:px-3 py-1.5 lg:py-2 text-[11px] lg:text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors rounded-full whitespace-nowrap"
               >
                 {item.label}
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
@@ -94,12 +97,12 @@ const Navbar = () => {
         transition={{ delay: 0.2 }}
         className="md:hidden fixed top-4 left-4 right-4 z-[100] flex justify-between items-center p-2.5 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-white/10 shadow-lg"
       >
-        <Link to="/" className="flex items-center gap-2 pl-2">
+        <a href="#home" onClick={(e) => handleScrollTo(e, '#home')} className="flex items-center gap-2 pl-2">
           <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-200 dark:border-white/20">
             <img src={profileImg} alt="Logo" className="w-full h-full object-cover" />
           </div>
           <span className="font-bold text-slate-800 dark:text-slate-100">Sarthak.</span>
-        </Link>
+        </a>
 
         <div className="flex items-center gap-2 pr-1">
           <button
@@ -155,18 +158,18 @@ const Navbar = () => {
               {/* Links List */}
               <div className="flex-1 flex flex-col p-4 gap-2 overflow-y-auto">
                 {menuItems.map((item, i) => (
-                  <Link
+                  <a
                     key={item.label}
-                    to={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`group flex items-center gap-3 px-5 py-3.5 rounded-xl text-base font-medium transition-all ${isActive(item.href)
-                      ? "bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400"
-                      : "text-slate-600 dark:text-slate-400 hover:bg-cyan-50 dark:hover:bg-cyan-900/10 hover:text-cyan-600 dark:hover:text-cyan-400"
-                      }`}
+                    href={item.href}
+                    onClick={(e) => {
+                      handleScrollTo(e, item.href);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="group flex items-center gap-3 px-5 py-3.5 rounded-xl text-base font-medium transition-all text-slate-600 dark:text-slate-400 hover:bg-cyan-50 dark:hover:bg-cyan-900/10 hover:text-cyan-600 dark:hover:text-cyan-400"
                   >
-                    <item.icon size={20} className={isActive(item.href) ? "text-cyan-600 dark:text-cyan-400" : "text-slate-400 dark:text-slate-600 group-hover:text-cyan-500 dark:group-hover:text-cyan-400"} />
+                    <item.icon size={20} className="text-slate-400 dark:text-slate-600 group-hover:text-cyan-500 dark:group-hover:text-cyan-400" />
                     {item.label}
-                  </Link>
+                  </a>
                 ))}
               </div>
 
